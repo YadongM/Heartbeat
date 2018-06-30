@@ -12,6 +12,7 @@ void conv_layer_init(struct layer **init_layer,struct data_box **com_p,struct da
     new_layer->update=conv_layer_update;
     new_layer->load_weight=conv_layer_load_weight;
     new_layer->pack_dweight=conv_layer_pack_dweight;
+    new_layer->pack_weight=conv_layer_pack_weight;
 
     struct data_box *common_p=*com_p;
     struct data_box *dcommon_p=*dcom_p;
@@ -40,13 +41,13 @@ void conv_layer_init(struct layer **init_layer,struct data_box **com_p,struct da
         new_layer->w[i]=rand()/(double)(RAND_MAX)*2-1;
     }
     new_layer->dw=(double *)malloc(filter_n*filter_h*filter_w*channel*sizeof(double));
-    new_layer->wm=(double *)calloc(filter_n*filter_h*filter_w*channel , sizeof(double));
-    new_layer->wv=(double *)calloc(filter_n*filter_h*filter_w*channel , sizeof(double));
+//    new_layer->wm=(double *)calloc(filter_n*filter_h*filter_w*channel , sizeof(double));
+//    new_layer->wv=(double *)calloc(filter_n*filter_h*filter_w*channel , sizeof(double));
 
     new_layer->b=(double *)calloc(filter_n , sizeof(double));
     new_layer->db=(double *)malloc(filter_n*sizeof(double));
-    new_layer->bm=(double *)calloc(filter_n , sizeof(double));
-    new_layer->bv=(double *)calloc(filter_n , sizeof(double));
+//    new_layer->bm=(double *)calloc(filter_n , sizeof(double));
+//    new_layer->bv=(double *)calloc(filter_n , sizeof(double));
 
     new_layer->weight_size=filter_n*filter_h*filter_w*channel+filter_n;
 //用于训练的内存空间初始化
@@ -110,6 +111,8 @@ void conv_layer_forward_pass(struct layer *l,int state){
                     }
                     sum+=layer->b[l];
                     layer->out->data[i*out_h*out_w*filter_n+j*out_w*filter_n+k*filter_n+l]=sum;
+                    
+                    //printf("%f ",sum);
                 }
             }
         }
@@ -207,6 +210,18 @@ void conv_layer_pack_dweight(struct layer *l,double *p){
     int filter_h=layer->filter_h;
     int filter_w=layer->filter_w;
 
-    memcpy(p,layer->dw,filter_n*filter_h*filter_w*channel*sizeof(double));
-    memcpy(p+filter_n*filter_h*filter_w*channel,layer->db,filter_n*sizeof(double));
+    memadd(p,layer->dw,filter_n*filter_h*filter_w*channel);
+    memadd(p+filter_n*filter_h*filter_w*channel,layer->db,filter_n);
+}
+
+void conv_layer_pack_weight(struct layer *l,double *p){
+    struct conv_layer *layer=(struct conv_layer *)l;
+
+    int channel=layer->x->shape[3];
+    int filter_n=layer->filter_n;
+    int filter_h=layer->filter_h;
+    int filter_w=layer->filter_w;
+
+    memcpy(p,layer->w,filter_n*filter_h*filter_w*channel*sizeof(double));
+    memcpy(p+filter_n*filter_h*filter_w*channel,layer->b,filter_n*sizeof(double));
 }

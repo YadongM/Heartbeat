@@ -32,6 +32,10 @@ double *softmax_forward_pass(struct softmax *softmax_obj,int state){
         for(int j=0;j<sample_size;j++){
             if(softmax_obj->label[i*sample_size+j]==1){
                 loss-=log(in[i*sample_size+j]);
+//                for(int k=0;k<sample_size;k++){
+//                    printf("%f",in[i*sample_size+k]);
+//                }
+//                printf("\n");
                 break;
             }
         }

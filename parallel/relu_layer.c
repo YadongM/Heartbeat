@@ -12,6 +12,7 @@ void relu_layer_init(struct layer **init_layer,struct data_box **com_p,struct da
     new_layer->update=relu_update;
     new_layer->load_weight=relu_layer_load_weight;
     new_layer->pack_dweight=relu_layer_pack_dweight;
+    new_layer->pack_weight=relu_layer_pack_weight;
 
     new_layer->weight_size=0;
 
@@ -59,5 +60,9 @@ void relu_layer_load_weight(struct layer *l,double *p){
 }
 
 void relu_layer_pack_dweight(struct layer *l,double *p){
+    return;
+}
+
+void relu_layer_pack_weight(struct layer *l,double *p){
     return;
 }

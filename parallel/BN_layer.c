@@ -14,6 +14,7 @@ void BN_layer_init(struct layer **init_layer,struct data_box **com_p,struct data
     new_layer->update=BN_layer_update;
     new_layer->load_weight=BN_layer_load_weight;
     new_layer->pack_dweight=BN_layer_pack_dweight;
+    new_layer->pack_weight=BN_layer_pack_weight;
 
     new_layer->eps=1e-5;
     new_layer->momentum=0.9;
@@ -39,10 +40,10 @@ void BN_layer_init(struct layer **init_layer,struct data_box **com_p,struct data
     new_layer->dgamma=(double *)malloc(num*sizeof(double));
     new_layer->dbeta=(double *)malloc(num*sizeof(double));
     //优化器参数
-    new_layer->gammam=(double *)calloc(num,sizeof(double));
-    new_layer->gammav=(double *)calloc(num,sizeof(double));
-    new_layer->betam=(double *)calloc(num,sizeof(double));
-    new_layer->betav=(double *)calloc(num,sizeof(double));
+//    new_layer->gammam=(double *)calloc(num,sizeof(double));
+//    new_layer->gammav=(double *)calloc(num,sizeof(double));
+//    new_layer->betam=(double *)calloc(num,sizeof(double));
+//    new_layer->betav=(double *)calloc(num,sizeof(double));
 
     new_layer->running_mean=(double *)calloc(num,sizeof(double));
     new_layer->running_var=(double *)calloc(num,sizeof(double));
@@ -112,7 +113,7 @@ void BN_layer_forward_pass(struct layer *l,int state){
             beta=layer->beta[i];
             for(int j=0;j<sample_num;j++){
                 layer->out->data[j*sample_size+i] = gamma * layer->x_hat[j*sample_size+i] + beta;
-    //            printf("%f ",layer->out->data[j*sample_size+i]);
+
             }
         }
     }else{
@@ -123,6 +124,7 @@ void BN_layer_forward_pass(struct layer *l,int state){
             sqrt_var=sqrt(layer->running_var[i]+eps);
             for(int j=0;j<sample_num;j++){
                 layer->out->data[j*sample_size+i] = gamma * (layer->x->data[j*sample_size+i] - mean) /sqrt_var + beta;
+                //printf("%f ",layer->out->data[j*sample_size+i]);
             }
         }
     }
@@ -185,6 +187,13 @@ void BN_layer_load_weight(struct layer *l,double *p){
 void BN_layer_pack_dweight(struct layer *l,double *p){
     struct BN_layer *layer=(struct BN_layer *)l;
     int num=layer->sample_size;
-    memcpy(p,layer->dgamma,num*sizeof(double));
-    memcpy(p+num,layer->dbeta,num*sizeof(double));
+    memadd(p,layer->dgamma,num);
+    memadd(p+num,layer->dbeta,num);
+}
+
+void BN_layer_pack_weight(struct layer *l,double *p){
+    struct BN_layer *layer=(struct BN_layer *)l;
+    int num=layer->sample_size;
+    memcpy(p,layer->gamma,num*sizeof(double));
+    memcpy(p+num,layer->beta,num*sizeof(double));
 }

@@ -11,6 +11,7 @@ void pool_layer_init(struct layer **init_layer,struct data_box **com_p,struct da
     new_layer->update=pool_layer_update;
     new_layer->load_weight=pool_layer_load_weight;
     new_layer->pack_dweight=pool_layer_pack_dweight;
+    new_layer->pack_weight=pool_layer_pack_weight;
 
     new_layer->weight_size=0;
 
@@ -126,5 +127,9 @@ void pool_layer_load_weight(struct layer *l,double *p){
 }
 
 void pool_layer_pack_dweight(struct layer *l,double *p){
+    return;
+}
+
+void pool_layer_pack_weight(struct layer *l,double *p){
     return;
 }

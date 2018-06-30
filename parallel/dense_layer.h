@@ -16,6 +16,7 @@ struct dense_layer{
     void (*update)(struct CNN *,struct layer *);
     void (*load_weight)(struct layer *l,double *p);
     void (*pack_dweight)(struct layer *l,double *p);
+    void (*pack_weight)(struct layer *l,double *p);
 
     int weight_size;
 
@@ -40,5 +41,6 @@ void dense_layer_backward_pass(struct layer *);
 void dense_layer_update(struct CNN *,struct layer *);
 void dense_layer_load_weight(struct layer *l,double *p);
 void dense_layer_pack_dweight(struct layer *l,double *p);
+void dense_layer_pack_weight(struct layer *l,double *p);
 
 #endif // __DENSE_LAYER_H

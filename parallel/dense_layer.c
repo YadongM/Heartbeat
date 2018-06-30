@@ -14,6 +14,7 @@ void dense_layer_init(struct layer **init_layer,struct data_box **com_p,struct d
     new_layer->update=dense_layer_update;
     new_layer->load_weight=dense_layer_load_weight;
     new_layer->pack_dweight=dense_layer_pack_dweight;
+    new_layer->pack_weight=dense_layer_pack_weight;
 
     new_layer->neuron_num=neuron_num;
 
@@ -37,10 +38,10 @@ void dense_layer_init(struct layer **init_layer,struct data_box **com_p,struct d
 
     new_layer->weight_size=num*neuron_num+neuron_num;
     //优化器参数
-    new_layer->wm=(double *)calloc(num*neuron_num,sizeof(double));
-    new_layer->wv=(double *)calloc(num*neuron_num,sizeof(double));
-    new_layer->bm=(double *)calloc(neuron_num,sizeof(double));
-    new_layer->bv=(double *)calloc(neuron_num,sizeof(double));
+////    new_layer->wm=(double *)calloc(num*neuron_num,sizeof(double));
+////    new_layer->wv=(double *)calloc(num*neuron_num,sizeof(double));
+////    new_layer->bm=(double *)calloc(neuron_num,sizeof(double));
+////    new_layer->bv=(double *)calloc(neuron_num,sizeof(double));
 //用于训练的内存空间初始化
     new_layer->out->data=(double *)malloc(common_p->shape[0]*neuron_num*sizeof(double));
     new_layer->out->shape=(int *)malloc(2*sizeof(int));
@@ -141,6 +142,16 @@ void dense_layer_pack_dweight(struct layer *l,double *p){
     int num=layer->sample_size;
     int neuron_num=layer->neuron_num;
 
-    memcpy(p,layer->dw,num*neuron_num*sizeof(double));
-    memcpy(p+num*neuron_num,layer->db,neuron_num*sizeof(double));
+    memadd(p,layer->dw,num*neuron_num);
+    memadd(p+num*neuron_num,layer->db,neuron_num);
+}
+
+void dense_layer_pack_weight(struct layer *l,double *p){
+    struct dense_layer *layer=(struct dense_layer *)l;
+
+    int num=layer->sample_size;
+    int neuron_num=layer->neuron_num;
+
+    memcpy(p,layer->w,num*neuron_num*sizeof(double));
+    memcpy(p+num*neuron_num,layer->b,neuron_num*sizeof(double));
 }

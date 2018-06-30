@@ -9,5 +9,5 @@
 //    int ndims;
 //};
 //void parse_npy_header(FILE* ,struct data_box *);
-struct data_box *npy_load(char *fname);
+struct data_box *npy_load(char *fname,int id,int nb_procs);
 #endif // __READ_NPY_H

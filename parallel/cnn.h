@@ -23,7 +23,7 @@ struct CNN{
 	int state;
 	int weight_size;
 	struct solver adam_para;
-	struct layer *layer_box[12];
+	struct layer *layer_box[19];
 	struct softmax *softmax_obj;
     struct data_box *(*loss_func)();
 };
@@ -39,6 +39,7 @@ struct layer{
     void (*update)(struct CNN *,struct layer *);
     void (*load_weight)(struct layer *l,double *p);
     void (*pack_dweight)(struct layer *l,double *p);
+    void (*pack_weight)(struct layer *l,double *p);
     int weight_size;
 };
 
@@ -54,5 +55,7 @@ void adam(struct CNN *cnn,double *x,double *dx,double *m,double *v,int size);
 void feed(struct CNN *cnn,struct feed_data *data);
 void load_weight(struct CNN *cnn,double *buf);
 void pack_dweight(struct CNN *cnn,double *buf);
+void pack_weight(struct CNN *cnn,double *buf);
+void memadd(double *dest,double *src,int size);
 
 #endif // __CNN_H
