@@ -9,11 +9,106 @@
 如果有疑问欢迎进行批评改进
 
 ```
-毛亚东 
-电子工程系  | Electric Engineering
-广东工业大学| Guangdong University of Technology , Guangzhou, China  
-
-Let's connect:
-Tel:  +86 13143331202
-Email: 1019193671@qq.com     maodreamer@gmail.com
+│  BN_layer.c
+│  BN_layer.h
+│  cnn.c
+│  cnn.cbp
+│  cnn.depend
+│  cnn.h
+│  cnn.layout
+│  conv_layer.c
+│  conv_layer.h
+│  dense_layer.c
+│  dense_layer.h
+│  list.txt
+│  main.c
+│  Makefile
+│  pool_layer.c
+│  pool_layer.h
+│  README.md
+│  read_npy.c
+│  read_npy.h
+│  relu_layer.c
+│  relu_layer.h
+│  softmax.c
+│  softmax.h
+│  
+├─bin
+│  └─Debug
+│          cnn.exe
+│          
+├─obj
+│  └─Debug
+│          BN_layer.o
+│          cnn.o
+│          conv_layer.o
+│          dense_layer.o
+│          main.o
+│          pool_layer.o
+│          read_npy.o
+│          relu_layer.o
+│          softmax.o
+│          softmax_layer.o
+│          
+├─parallel
+│      BN_layer.c
+│      BN_layer.h
+│      cnn.c
+│      cnn.h
+│      conv_layer.c
+│      conv_layer.h
+│      dense_layer.c
+│      dense_layer.h
+│      main.c
+│      Makefile
+│      pool_layer.c
+│      pool_layer.h
+│      read_npy.c
+│      read_npy.h
+│      relu_layer.c
+│      relu_layer.h
+│      softmax.c
+│      softmax.h
+│      
+└─serial
+    │  BN_layer.c
+    │  BN_layer.h
+    │  cnn.c
+    │  cnn.cbp
+    │  cnn.depend
+    │  cnn.h
+    │  cnn.layout
+    │  conv_layer.c
+    │  conv_layer.h
+    │  dense_layer.c
+    │  dense_layer.h
+    │  main.c
+    │  Makefile
+    │  pool_layer.c
+    │  pool_layer.h
+    │  read_npy.c
+    │  read_npy.h
+    │  relu_layer.c
+    │  relu_layer.h
+    │  softmax.c
+    │  softmax.h
+    │  
+    ├─bin
+    │  └─Debug
+    │          cnn.exe
+    │          
+    └─obj
+        └─Debug
+                BN_layer.o
+                cnn.o
+                conv_layer.o
+                dense_layer.o
+                main.o
+                pool_layer.o
+                read_npy.o
+                relu_layer.o
+                softmax.o
+                softmax_layer.o
+                
+                
 ```
